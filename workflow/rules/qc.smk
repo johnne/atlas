@@ -612,10 +612,11 @@ rule write_read_counts:
     run:
         import pandas as pd
 
-        all_read_counts = pd.DataFrame()
+        dataframes = []
         for read_stats_file in input.read_count_files:
             d = pd.read_csv(read_stats_file, index_col=[0, 1], sep="\t")
-            all_read_counts = all_read_counts.append(d)
+            dataframes.append(d)
+        all_read_counts = pd.concat(dataframes)
         all_read_counts.to_csv(output.read_stats, sep="\t")
 
 
